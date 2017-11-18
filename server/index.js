@@ -8,8 +8,8 @@ app.use(bodyParser.json())
 
 
  let students= [
-    {id:1,name:'suphalert',u:'buu',year:'1500',email:'su@gja.com'},
-    {id:2,name:'kikee',u:'u',year:'1900',email:'qwe@gja.com'}
+    {id:1,name:'Adisorn',u:'buu',year:'1500',email:'arm@gmail.com',faculty:'Math'},
+    {id:2,name:'kikee',u:'u',year:'1900',email:'qwe@gja.com',faculty:'sa'}
     ]   
 app.get('/greeting',(req,res) =>{
     let lang={
@@ -28,19 +28,25 @@ app.get('/greeting',(req,res) =>{
   
 })
 
-
+ 
 app.get('/students',(req,res) =>{
    
 
-    res.json(students)
+    res.status(200).json(students)
 })
 app.get('/students/:id',(req,res)=>{
+    let id = req.param.id
+    if(!id||isNaN(id)){
+        res.status(400).json({errorMessage:'This api require`id`parameter' })
+        return
+    }
     res.json(students[req.params.id-1])
 })
 
 app.post('/students', (req, res) => {
     let student = req.body
+    student.id = students.length + 1
     students.push(student)
-    res.json(student)
+    res.status(201).json(student)
 })
 module.exports = app   
